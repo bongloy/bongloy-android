@@ -1,6 +1,6 @@
 ## stripe-android
 
-[![Build Status](https://api.travis-ci.org/stripe/stripe-android.svg?branch=master)](https://travis-ci.org/stripe/stripe-android)
+[![Build Status](https://travis-ci.org/bongloy/bongloy-android.svg?branch=master)](https://travis-ci.org/bongloy/bongloy-android)
 
 Stripe-android makes it easy to collect credit card information without having sensitive details touch your server.
 
@@ -12,9 +12,20 @@ These Stripe Android bindings can be used to generate tokens in your Android app
 
 No need to clone the repository or download any files -- just add this line to your app's `build.gradle` inside the `dependencies` section:
 
-    compile 'com.stripe:stripe-android:5.1.1'
+```groovy
+  compile 'com.github.bongloy:bongloy-android:-SNAPSHOT@arr'
+```
 
-Note: We recommend that you don't use `compile 'com.stripe:stripe-android:+`, as future versions of the SDK may not maintain full backwards compatibility. When such a change occurs, a major version number change will accompany it.
+Make sure you also have the `jitpack` and `marven` repositories defined in the `repositories` section:
+
+```groovy
+allprojects {
+  repositories {
+    maven { url 'https://jitpack.io' }
+    maven { url "https://maven.google.com" }
+  }
+}
+```
 
 ### Eclipse
 
@@ -81,7 +92,7 @@ if (cardToSave == null) {
 }
 ```
 
-If the returned `Card` is null, error states will show on the fields that need to be fixed. 
+If the returned `Card` is null, error states will show on the fields that need to be fixed.
 
 Once you have a non-null `Card` object from either widget, you can call [createToken](#createtoken).
 
