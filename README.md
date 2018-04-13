@@ -1,4 +1,12 @@
-## stripe-android
+# Deprecation Notice
+
+This library is deprecated and is here for reference only. Please use the [stripe-android library](https://github.com/stripe/stripe-android) instead. To use the stripe android library with Bongloy, change the following code in [StripeApiHandler.java](https://github.com/stripe/stripe-android/blob/master/stripe/src/main/java/com/stripe/android/StripeApiHandler.java)
+
+```java
+  private static final String LIVE_API_BASE = "https://api.bongloy.com";
+```
+
+## bongloy-android
 
 [![Build Status](https://travis-ci.org/bongloy/bongloy-android.svg?branch=master)](https://travis-ci.org/bongloy/bongloy-android)
 
@@ -126,28 +134,29 @@ stripe.createToken(
 
 The first argument to createToken is a Card object. A Card contains the following fields:
 
-+ number: card number as a string without any separators, e.g. '4242424242424242'.
-+ expMonth: integer representing the card's expiration month, e.g. 12.
-+ expYear: integer representing the card's expiration year, e.g. 2013.
+-   number: card number as a string without any separators, e.g. '4242424242424242'.
+-   expMonth: integer representing the card's expiration month, e.g. 12.
+-   expYear: integer representing the card's expiration year, e.g. 2013.
 
 The following field is optional but recommended to help prevent fraud:
 
-+ cvc: card security code as a string, e.g. '123'.
+-   cvc: card security code as a string, e.g. '123'.
 
 The following fields are entirely optional — they cannot result in a token creation failing:
 
-+ name: cardholder name.
-+ addressLine1: billing address line 1.
-+ addressLine2: billing address line 2.
-+ addressCity: billing address city.
-+ addressState: billing address state.
-+ addressZip: billing zip as a string, e.g. '94301'.
-+ addressCountry: billing address country.
+-   name: cardholder name.
+-   addressLine1: billing address line 1.
+-   addressLine2: billing address line 2.
+-   addressCity: billing address city.
+-   addressState: billing address state.
+-   addressZip: billing zip as a string, e.g. '94301'.
+-   addressCountry: billing address country.
 
 The second argument tokenCallback is a callback you provide to handle responses from Stripe.
 It should send the token to your server for processing onSuccess, and notify the user onError.
 
 Here's a sample implementation of the token callback:
+
 ```java
 stripe.createToken(
     card,
@@ -172,6 +181,7 @@ stripe.createToken(
 The `createTokenSynchronous` method allows you to handle threading on your own, using any IO framework you choose. In particular, you can now create a token using RxJava or an IntentService. **Note: do not call this method on the main thread or your app will crash!**
 
 #### RxJava Example
+
 ```java
 Observable<Token> tokenObservable =
     Observable.fromCallable(
@@ -218,9 +228,11 @@ tokenObservable
                 }
             });
 ```
+
 #### IntentService Example
 
 You can invoke the following from your code (where `cardToSave` is some Card object that you have created.)
+
 ```java
 Intent tokenServiceIntent = TokenIntentService.createTokenIntent(
         mActivity,
@@ -233,6 +245,7 @@ mActivity.startService(tokenServiceIntent);
 ```
 
 Your IntentService can then perform the following in its `onHandleIntent` method.
+
 ```java
 @Override
 protected void onHandleIntent(Intent intent) {
@@ -267,6 +280,7 @@ protected void onHandleIntent(Intent intent) {
 ```
 
 Registering a local BroadcastReceiver in your activity then allows you to handle the results.
+
 ```java
 private class TokenBroadcastReceiver extends BroadcastReceiver {
 
@@ -314,8 +328,9 @@ Convenience method to validate card number, expiry date and CVC.
 ## Example apps
 
 There are 2 example apps included in the repository:
-- Example project is a simple example of different ways to connect our components, including how to make tokens and sources, how to connect the synchronous and asynchronous methods, and how to use the CardInputWidget.
-- SampleStore project is a full walk-through of building a shop activity, including connecting to a back end.
+
+-   Example project is a simple example of different ways to connect our components, including how to make tokens and sources, how to connect the synchronous and asynchronous methods, and how to use the CardInputWidget.
+-   SampleStore project is a full walk-through of building a shop activity, including connecting to a back end.
 
 To build and run the example apps, clone the repository and open the project. Running "example" will run the Example application, and running "samplestore" will run the shop activity.
 
@@ -325,12 +340,12 @@ Note: both example apps require an [Android SDK](https://developer.android.com/s
 
 ### Building the example project
 
-1. Clone the git repository.
-2. Be sure you've installed the Android SDK with API Level 17 and _android-support-v4_. This is only a requirement for development. Our bindings require the API Level 7 as a minimum at runtime which would work on almost any modern version of Android.
-3. Import the project.
-    * For Android Studio, choose _Import Project..._ from the "Welcome to Android Studio" screen. Select the `build.gradle` file at the top of the `stripe-android` repository.
-    * For Eclipse, [import](http://help.eclipse.org/juno/topic/org.eclipse.platform.doc.user/tasks/tasks-importproject.htm) the _example_ and _stripe_ folders into, by using `Import -> General -> Existing Projects into Workspace`, and browsing to the `stripe-android` folder.
-4. Build and run the project on your device or in the Android emulator.
+1.  Clone the git repository.
+2.  Be sure you've installed the Android SDK with API Level 17 and _android-support-v4_. This is only a requirement for development. Our bindings require the API Level 7 as a minimum at runtime which would work on almost any modern version of Android.
+3.  Import the project.
+    -   For Android Studio, choose _Import Project..._ from the "Welcome to Android Studio" screen. Select the `build.gradle` file at the top of the `stripe-android` repository.
+    -   For Eclipse, [import](http://help.eclipse.org/juno/topic/org.eclipse.platform.doc.user/tasks/tasks-importproject.htm) the _example_ and _stripe_ folders into, by using `Import -> General -> Existing Projects into Workspace`, and browsing to the `stripe-android` folder.
+4.  Build and run the project on your device or in the Android emulator.
 
 The example application needs a public key from your Stripe account to interact with the Stripe API. To add this, [replace the value of PUBLISHABLE_KEY in LauncherActivity with your test key](example/src/main/java/com/stripe/example/activity/LauncherActivity.java#L25).
 
@@ -341,12 +356,12 @@ Three different ways of creating tokens are shown, with all the Stripe-specific 
 
 Before you can run the SampleStore application or use the CustomerSessionActivity in the example application, you need to provide it with your Stripe publishable key and a sample backend.
 
-1. If you haven't already, sign up for a [Stripe account](https://dashboard.stripe.com/register) (it takes seconds). Then go to https://dashboard.stripe.com/account/apikeys.
-2. Replace the `PUBLISHABLE_KEY` constant in StoreActivity.java (where it says "put your publishable key here") with your Test Publishable Key.
-3. Head to https://github.com/stripe/example-ios-backend and click "Deploy to Heroku" (you may have to sign up for a Heroku account as part of this process). Provide your Stripe test secret key for the STRIPE_TEST_SECRET_KEY field under 'Env'. Click "Deploy for Free".
-4. Replace the `BASE_URL` variable (where it says "Put your backend URL here") in the RetrofitFactory.java file with the app URL Heroku provides you with (e.g. "https://my-example-app.herokuapp.com")
+1.  If you haven't already, sign up for a [Stripe account](https://dashboard.stripe.com/register) (it takes seconds). Then go to <https://dashboard.stripe.com/account/apikeys>.
+2.  Replace the `PUBLISHABLE_KEY` constant in StoreActivity.java (where it says "put your publishable key here") with your Test Publishable Key.
+3.  Head to <https://github.com/stripe/example-ios-backend> and click "Deploy to Heroku" (you may have to sign up for a Heroku account as part of this process). Provide your Stripe test secret key for the STRIPE_TEST_SECRET_KEY field under 'Env'. Click "Deploy for Free".
+4.  Replace the `BASE_URL` variable (where it says "Put your backend URL here") in the RetrofitFactory.java file with the app URL Heroku provides you with (e.g. "<https://my-example-app.herokuapp.com">)
 
-After this is done, you can make test payments through the app and see them in your Stripe dashboard. Head to https://stripe.com/docs/testing#cards for a list of test card numbers.
+After this is done, you can make test payments through the app and see them in your Stripe dashboard. Head to <https://stripe.com/docs/testing#cards> for a list of test card numbers.
 
 ## Migrating from older versions
 
